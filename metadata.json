@@ -1,0 +1,6 @@
+{
+  "name": "FitCheck - Desafio 21 Dias",
+  "description": "Interface de cadastro para o desafio FitCheck de 21 dias de transformação e superação feminina.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
