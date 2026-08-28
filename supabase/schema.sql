@@ -1,13 +1,12 @@
 -- ==============================================================================
--- FITCHECK - DESAFIO 21 DIAS
--- Script SQL para Criação do Banco de Dados no Supabase
--- Inclui: Tabelas, Storage Buckets, Políticas de Segurança (RLS), Triggers e Índices
+-- FITCHECK - DESAFIO 21 DIAS (SCRIPT IDEMPOTENTE / SEGURO PARA RE-EXECUÇÃO)
+-- Use este script se você recebeu o erro de "policy already exists".
 -- ==============================================================================
 
--- 1. HABILITAR EXTENSÃO DE UUID (se ainda não estiver habilitada)
+-- 1. EXTENSÃO UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 2. ENUM PARA STATUS DE PAGAMENTO E AVALIAÇÃO (Opcional, ou usar CHECK constraints)
+-- 2. ENUMS DE STATUS
 DO $$ BEGIN
     CREATE TYPE status_pagamento_enum AS ENUM ('em_analise', 'confirmado', 'recusado');
 EXCEPTION
@@ -33,12 +32,12 @@ CREATE TABLE IF NOT EXISTS public.inscricoes_fitcheck (
     celular VARCHAR(30) NOT NULL,
     objetivo_principal TEXT,
     
-    -- URLs dos arquivos armazenados no Supabase Storage
+    -- URLs dos arquivos no Supabase Storage
     foto_frontal_url TEXT NOT NULL,
     foto_lateral_url TEXT NOT NULL,
     comprovante_pagamento_url TEXT NOT NULL,
     
-    -- Metadados da inscrição
+    -- Metadados
     termo_aceito BOOLEAN NOT NULL DEFAULT true,
     status_pagamento status_pagamento_enum NOT NULL DEFAULT 'em_analise',
     status_desafio status_desafio_enum NOT NULL DEFAULT 'inscrita',
@@ -49,14 +48,14 @@ CREATE TABLE IF NOT EXISTS public.inscricoes_fitcheck (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- 4. ÍNDICES PARA ALTA PERFORMANCE DE CONSULTA
+-- 4. ÍNDICES DE PERFORMANCE
 CREATE INDEX IF NOT EXISTS idx_inscricoes_email ON public.inscricoes_fitcheck (email);
 CREATE INDEX IF NOT EXISTS idx_inscricoes_celular ON public.inscricoes_fitcheck (celular);
 CREATE INDEX IF NOT EXISTS idx_inscricoes_protocolo ON public.inscricoes_fitcheck (protocolo);
 CREATE INDEX IF NOT EXISTS idx_inscricoes_status_pagamento ON public.inscricoes_fitcheck (status_pagamento);
 CREATE INDEX IF NOT EXISTS idx_inscricoes_created_at ON public.inscricoes_fitcheck (created_at DESC);
 
--- 5. TRIGGER AUTOMÁTICO PARA ATUALIZAR O CAMPO updated_at
+-- 5. TRIGGER DE UPDATED_AT
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -71,24 +70,27 @@ BEFORE UPDATE ON public.inscricoes_fitcheck
 FOR EACH ROW
 EXECUTE FUNCTION public.handle_updated_at();
 
--- 6. HABILITAR ROW LEVEL SECURITY (RLS)
+-- 6. HABILITAR RLS NA TABELA
 ALTER TABLE public.inscricoes_fitcheck ENABLE ROW LEVEL SECURITY;
 
--- Política 1: Permitir inserção anônima (qualquer usuária pode enviar seu cadastro pelo formulário)
+-- REMOVE AS POLÍTICAS ANTIGAS SE JÁ EXISTIREM PARA EVITAR ERRO DE DUPLICIDADE
+DROP POLICY IF EXISTS "Permitir insercao publica de inscricoes" ON public.inscricoes_fitcheck;
+DROP POLICY IF EXISTS "Permitir leitura apenas para autenticados" ON public.inscricoes_fitcheck;
+DROP POLICY IF EXISTS "Permitir update apenas para autenticados" ON public.inscricoes_fitcheck;
+
+-- CRIAÇÃO DAS POLÍTICAS DE ACESSO DA TABELA
 CREATE POLICY "Permitir insercao publica de inscricoes"
 ON public.inscricoes_fitcheck
 FOR INSERT
 TO anon, authenticated
 WITH CHECK (true);
 
--- Política 2: Leitura apenas para administradores autenticados (ou via Service Role)
 CREATE POLICY "Permitir leitura apenas para autenticados"
 ON public.inscricoes_fitcheck
 FOR SELECT
 TO authenticated
 USING (true);
 
--- Política 3: Atualização apenas para administradores autenticados
 CREATE POLICY "Permitir update apenas para autenticados"
 ON public.inscricoes_fitcheck
 FOR UPDATE
@@ -96,12 +98,11 @@ TO authenticated
 USING (true)
 WITH CHECK (true);
 
-
 -- ==============================================================================
--- 7. CONFIGURAÇÃO DOS BUCKETS DO SUPABASE STORAGE
+-- 7. BUCKETS DE STORAGE & POLÍTICAS DE STORAGE
 -- ==============================================================================
 
--- Criar Bucket para Fotos de Avaliação Física (Privado por padrão para privacidade)
+-- Criar Buckets privados para armazenar fotos com segurança
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES 
     (
@@ -120,7 +121,13 @@ VALUES
     )
 ON CONFLICT (id) DO NOTHING;
 
--- Políticas de Storage: Permitir Upload anônimo (pelo formulário web)
+-- REMOVE POLÍTICAS DE STORAGE ANTIGAS CASO JÁ EXISTAM
+DROP POLICY IF EXISTS "Permitir upload publico de fotos de avaliacao" ON storage.objects;
+DROP POLICY IF EXISTS "Permitir upload publico de comprovantes" ON storage.objects;
+DROP POLICY IF EXISTS "Permitir leitura de avaliacoes apenas para autenticados" ON storage.objects;
+DROP POLICY IF EXISTS "Permitir leitura de comprovantes apenas para autenticados" ON storage.objects;
+
+-- CRIAÇÃO DAS POLÍTICAS DE STORAGE
 CREATE POLICY "Permitir upload publico de fotos de avaliacao"
 ON storage.objects
 FOR INSERT
@@ -133,7 +140,6 @@ FOR INSERT
 TO anon, authenticated
 WITH CHECK (bucket_id = 'fitcheck-comprovantes');
 
--- Políticas de Storage: Permitir leitura e download apenas para usuários autenticados (administradores/avaliadores)
 CREATE POLICY "Permitir leitura de avaliacoes apenas para autenticados"
 ON storage.objects
 FOR SELECT
