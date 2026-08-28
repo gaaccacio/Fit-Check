@@ -22,7 +22,7 @@ import { PhotoUploader } from './PhotoUploader';
 import { PaymentSection } from './PaymentSection';
 import { PhotoGuidelineModal } from './PhotoGuidelineModal';
 import { DailyMotivationBanner } from './DailyMotivationBanner';
-import { supabase, isSupabaseConfigured, uploadFileToSupabase } from '../lib/supabase';
+import { getSupabaseClient, getSupabaseCredentials, uploadFileToSupabase } from '../lib/supabase';
 
 interface RegistrationFormProps {
   onSuccess: (data: SubmittedRegistration) => void;
@@ -56,6 +56,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [guidelineModalOpen, setGuidelineModalOpen] = useState(false);
 
   // Live BMI calculation
@@ -201,44 +202,69 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setSubmitError(null);
     const randomCode = Math.floor(1000 + Math.random() * 9000);
     const protocolNumber = `FC21-${randomCode}`;
 
     try {
+      const client = getSupabaseClient();
+      const creds = getSupabaseCredentials();
+
       let fotoFrontalUrl = '';
       let fotoLateralUrl = '';
       let comprovanteUrl = '';
 
-      if (isSupabaseConfigured && supabase) {
+      if (creds.isConfigured && client) {
         const timestamp = Date.now();
         const safeName = formData.nome.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 20);
 
         // 1. Upload Foto Frontal
         if (formData.fotoFrontal) {
-          const ext = formData.fotoFrontal.name.split('.').pop() || 'jpg';
-          const path = `${protocolNumber}/${safeName}_frontal_${timestamp}.${ext}`;
-          fotoFrontalUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoFrontal);
+          try {
+            const ext = formData.fotoFrontal.name.split('.').pop() || 'jpg';
+            const path = `${protocolNumber}/${safeName}_frontal_${timestamp}.${ext}`;
+            fotoFrontalUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoFrontal);
+          } catch (uploadErr) {
+            console.warn('Erro ao subir foto frontal no storage:', uploadErr);
+            fotoFrontalUrl = `pendente_${protocolNumber}_frontal`;
+          }
+        } else {
+          fotoFrontalUrl = `sem_foto_${protocolNumber}_frontal`;
         }
 
         // 2. Upload Foto Lateral
         if (formData.fotoLateral) {
-          const ext = formData.fotoLateral.name.split('.').pop() || 'jpg';
-          const path = `${protocolNumber}/${safeName}_lateral_${timestamp}.${ext}`;
-          fotoLateralUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoLateral);
+          try {
+            const ext = formData.fotoLateral.name.split('.').pop() || 'jpg';
+            const path = `${protocolNumber}/${safeName}_lateral_${timestamp}.${ext}`;
+            fotoLateralUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoLateral);
+          } catch (uploadErr) {
+            console.warn('Erro ao subir foto lateral no storage:', uploadErr);
+            fotoLateralUrl = `pendente_${protocolNumber}_lateral`;
+          }
+        } else {
+          fotoLateralUrl = `sem_foto_${protocolNumber}_lateral`;
         }
 
         // 3. Upload Comprovante
         if (formData.comprovantePagamento) {
-          const ext = formData.comprovantePagamento.name.split('.').pop() || 'pdf';
-          const path = `${protocolNumber}/${safeName}_comprovante_${timestamp}.${ext}`;
-          comprovanteUrl = await uploadFileToSupabase('fitcheck-comprovantes', path, formData.comprovantePagamento);
+          try {
+            const ext = formData.comprovantePagamento.name.split('.').pop() || 'pdf';
+            const path = `${protocolNumber}/${safeName}_comprovante_${timestamp}.${ext}`;
+            comprovanteUrl = await uploadFileToSupabase('fitcheck-comprovantes', path, formData.comprovantePagamento);
+          } catch (uploadErr) {
+            console.warn('Erro ao subir comprovante no storage:', uploadErr);
+            comprovanteUrl = `pendente_${protocolNumber}_comprovante`;
+          }
+        } else {
+          comprovanteUrl = `sem_comprovante_${protocolNumber}`;
         }
 
         // 4. Salvar na Tabela do Supabase
         const pesoNumerico = parseWeightValue(formData.peso) || 0;
         const alturaNumerica = parseHeightValue(formData.altura) || 0;
 
-        const { error: insertError } = await supabase
+        const { error: insertError } = await client
           .from('inscricoes_fitcheck')
           .insert({
             protocolo: protocolNumber,
@@ -259,10 +285,12 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
         if (insertError) {
           console.error('Erro ao salvar no Supabase:', insertError);
-          // Continua para o sucesso do usuário para não bloquear a experiência
+          setSubmitError(`Erro ao gravar no banco: ${insertError.message} (${insertError.code || 'RLS/Tabela'}).`);
+          setIsSubmitting(false);
+          return;
         }
       } else {
-        // Simulação com pequeno delay se não configurado
+        console.warn('Supabase não está configurado com variáveis de ambiente. Usando modo local/demonstração.');
         await new Promise((resolve) => setTimeout(resolve, 800));
       }
 
@@ -286,36 +314,38 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
       setIsSubmitting(false);
       onSuccess(submission);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Erro no envio do formulário:', err);
-      // Fallback para exibir o sucesso
-      const submission: SubmittedRegistration = {
-        ...formData,
-        id: protocolNumber,
-        dataCadastro: new Date().toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        statusPagamento: 'em_analise',
-        imc: imcInfo ? {
-          valor: imcInfo.valor,
-          classificacao: imcInfo.classificacao,
-          cor: imcInfo.cor,
-        } : undefined,
-      };
-
+      setSubmitError(`Ocorreu uma falha ao enviar: ${err?.message || err}.`);
       setIsSubmitting(false);
-      onSuccess(submission);
     }
   };
+
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16 space-y-8">
       {/* Motivation Banner */}
       <DailyMotivationBanner />
+
+      {submitError && (
+        <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-4 text-red-900 shadow-sm flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <h4 className="font-bold text-sm">Não foi possível gravar no banco de dados</h4>
+            <p className="text-xs text-red-700 mt-1">{submitError}</p>
+            <p className="text-xs text-red-600 mt-2">
+              Dica: Verifique se executou o script SQL no SQL Editor do Supabase ou se as chaves estão corretas.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSubmitError(null)}
+            className="text-red-500 hover:text-red-800 text-xs font-bold px-2 py-1"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Main Registration Card */}
       <form onSubmit={handleSubmit} className="space-y-8">

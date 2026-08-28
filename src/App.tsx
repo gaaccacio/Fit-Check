@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { RegistrationForm } from './components/RegistrationForm';
 import { SuccessView } from './components/SuccessView';
+import { SupabaseDiagnosticModal } from './components/SupabaseDiagnosticModal';
 import { SubmittedRegistration } from './types';
-import { Heart, Sparkles, Shield, Dumbbell } from 'lucide-react';
+import { Heart, Sparkles, Shield, Dumbbell, Database } from 'lucide-react';
 
 export default function App() {
   const [submittedData, setSubmittedData] = useState<SubmittedRegistration | null>(null);
+  const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
 
   const handleSuccess = (data: SubmittedRegistration) => {
     setSubmittedData(data);
@@ -38,6 +40,12 @@ export default function App() {
         )}
       </main>
 
+      {/* Diagnostic Modal */}
+      <SupabaseDiagnosticModal
+        isOpen={isDiagnosticOpen}
+        onClose={() => setIsDiagnosticOpen(false)}
+      />
+
       {/* Footer */}
       <footer className="bg-white border-t border-rose-100 py-6 px-4 text-center text-xs text-stone-500">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -46,12 +54,24 @@ export default function App() {
             <span>FitCheck © 2026 • Desafio 21 Dias</span>
           </div>
 
-          <div className="flex items-center gap-1 text-stone-500">
-            <span>Desenvolvido com foco no empoderamento e saúde feminina</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setIsDiagnosticOpen(true)}
+              className="text-stone-400 hover:text-stone-700 transition flex items-center gap-1 cursor-pointer"
+            >
+              <Database className="w-3.5 h-3.5" />
+              <span>Conexão Supabase</span>
+            </button>
+
+            <div className="flex items-center gap-1 text-stone-500">
+              <span>Saúde e foco</span>
+              <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            </div>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
