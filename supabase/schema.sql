@@ -99,33 +99,38 @@ USING (true)
 WITH CHECK (true);
 
 -- ==============================================================================
--- 7. BUCKETS DE STORAGE & POLÍTICAS DE STORAGE
+-- 7. BUCKETS DE STORAGE & POLÍTICAS DE STORAGE PÚBLICO (VISUALIZAÇÃO DIRETA)
 -- ==============================================================================
 
--- Criar Buckets privados para armazenar fotos com segurança
+-- Criar Buckets públicos para permitir visualização de fotos e comprovantes
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES 
     (
         'fitcheck-avaliacoes', 
         'fitcheck-avaliacoes', 
-        false, 
+        true, 
         10485760, -- 10MB
         ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/heic']
     ),
     (
         'fitcheck-comprovantes', 
         'fitcheck-comprovantes', 
-        false, 
+        true, 
         10485760, -- 10MB
         ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf']
     )
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Garantir que os buckets existentes fiquem públicos
+UPDATE storage.buckets SET public = true WHERE id IN ('fitcheck-avaliacoes', 'fitcheck-comprovantes');
 
 -- REMOVE POLÍTICAS DE STORAGE ANTIGAS CASO JÁ EXISTAM
 DROP POLICY IF EXISTS "Permitir upload publico de fotos de avaliacao" ON storage.objects;
 DROP POLICY IF EXISTS "Permitir upload publico de comprovantes" ON storage.objects;
 DROP POLICY IF EXISTS "Permitir leitura de avaliacoes apenas para autenticados" ON storage.objects;
 DROP POLICY IF EXISTS "Permitir leitura de comprovantes apenas para autenticados" ON storage.objects;
+DROP POLICY IF EXISTS "Permitir visualizacao publica de fotos de avaliacao" ON storage.objects;
+DROP POLICY IF EXISTS "Permitir visualizacao publica de comprovantes" ON storage.objects;
 
 -- CRIAÇÃO DAS POLÍTICAS DE STORAGE
 CREATE POLICY "Permitir upload publico de fotos de avaliacao"
@@ -140,14 +145,14 @@ FOR INSERT
 TO anon, authenticated
 WITH CHECK (bucket_id = 'fitcheck-comprovantes');
 
-CREATE POLICY "Permitir leitura de avaliacoes apenas para autenticados"
+CREATE POLICY "Permitir visualizacao publica de fotos de avaliacao"
 ON storage.objects
 FOR SELECT
-TO authenticated
+TO anon, authenticated
 USING (bucket_id = 'fitcheck-avaliacoes');
 
-CREATE POLICY "Permitir leitura de comprovantes apenas para autenticados"
+CREATE POLICY "Permitir visualizacao publica de comprovantes"
 ON storage.objects
 FOR SELECT
-TO authenticated
+TO anon, authenticated
 USING (bucket_id = 'fitcheck-comprovantes');
