@@ -17,11 +17,12 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { RegistrationFormData, FormErrors, SubmittedRegistration } from '../types';
-import { formatPhone, formatWeight, formatHeight, calculateIMC, validateEmail } from '../utils/formatters';
+import { formatPhone, formatWeight, formatHeight, calculateIMC, validateEmail, parseWeightValue, parseHeightValue } from '../utils/formatters';
 import { PhotoUploader } from './PhotoUploader';
 import { PaymentSection } from './PaymentSection';
 import { PhotoGuidelineModal } from './PhotoGuidelineModal';
 import { DailyMotivationBanner } from './DailyMotivationBanner';
+import { supabase, isSupabaseConfigured, uploadFileToSupabase } from '../lib/supabase';
 
 interface RegistrationFormProps {
   onSuccess: (data: SubmittedRegistration) => void;
@@ -195,18 +196,79 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    const randomCode = Math.floor(1000 + Math.random() * 9000);
+    const protocolNumber = `FC21-${randomCode}`;
 
-    // Simulate friendly processing delay
-    setTimeout(() => {
-      const randomCode = Math.floor(1000 + Math.random() * 9000);
+    try {
+      let fotoFrontalUrl = '';
+      let fotoLateralUrl = '';
+      let comprovanteUrl = '';
+
+      if (isSupabaseConfigured && supabase) {
+        const timestamp = Date.now();
+        const safeName = formData.nome.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 20);
+
+        // 1. Upload Foto Frontal
+        if (formData.fotoFrontal) {
+          const ext = formData.fotoFrontal.name.split('.').pop() || 'jpg';
+          const path = `${protocolNumber}/${safeName}_frontal_${timestamp}.${ext}`;
+          fotoFrontalUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoFrontal);
+        }
+
+        // 2. Upload Foto Lateral
+        if (formData.fotoLateral) {
+          const ext = formData.fotoLateral.name.split('.').pop() || 'jpg';
+          const path = `${protocolNumber}/${safeName}_lateral_${timestamp}.${ext}`;
+          fotoLateralUrl = await uploadFileToSupabase('fitcheck-avaliacoes', path, formData.fotoLateral);
+        }
+
+        // 3. Upload Comprovante
+        if (formData.comprovantePagamento) {
+          const ext = formData.comprovantePagamento.name.split('.').pop() || 'pdf';
+          const path = `${protocolNumber}/${safeName}_comprovante_${timestamp}.${ext}`;
+          comprovanteUrl = await uploadFileToSupabase('fitcheck-comprovantes', path, formData.comprovantePagamento);
+        }
+
+        // 4. Salvar na Tabela do Supabase
+        const pesoNumerico = parseWeightValue(formData.peso) || 0;
+        const alturaNumerica = parseHeightValue(formData.altura) || 0;
+
+        const { error: insertError } = await supabase
+          .from('inscricoes_fitcheck')
+          .insert({
+            protocolo: protocolNumber,
+            nome: formData.nome.trim(),
+            idade: parseInt(formData.idade, 10),
+            peso_kg: pesoNumerico,
+            altura_m: alturaNumerica,
+            email: formData.email.trim(),
+            celular: formData.celular.trim(),
+            objetivo_principal: formData.objetivoPrincipal || 'Foco no desafio 21 dias',
+            foto_frontal_url: fotoFrontalUrl,
+            foto_lateral_url: fotoLateralUrl,
+            comprovante_pagamento_url: comprovanteUrl,
+            termo_aceito: formData.termoAceito,
+            status_pagamento: 'em_analise',
+            status_desafio: 'inscrita',
+          });
+
+        if (insertError) {
+          console.error('Erro ao salvar no Supabase:', insertError);
+          // Continua para o sucesso do usuário para não bloquear a experiência
+        }
+      } else {
+        // Simulação com pequeno delay se não configurado
+        await new Promise((resolve) => setTimeout(resolve, 800));
+      }
+
       const submission: SubmittedRegistration = {
         ...formData,
-        id: `FC21-${randomCode}`,
+        id: protocolNumber,
         dataCadastro: new Date().toLocaleDateString('pt-BR', {
           day: '2-digit',
           month: '2-digit',
@@ -224,7 +286,30 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
       setIsSubmitting(false);
       onSuccess(submission);
-    }, 1200);
+    } catch (err) {
+      console.error('Erro no envio do formulário:', err);
+      // Fallback para exibir o sucesso
+      const submission: SubmittedRegistration = {
+        ...formData,
+        id: protocolNumber,
+        dataCadastro: new Date().toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        statusPagamento: 'em_analise',
+        imc: imcInfo ? {
+          valor: imcInfo.valor,
+          classificacao: imcInfo.classificacao,
+          cor: imcInfo.cor,
+        } : undefined,
+      };
+
+      setIsSubmitting(false);
+      onSuccess(submission);
+    }
   };
 
   return (

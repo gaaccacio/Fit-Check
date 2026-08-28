@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { RegistrationForm } from './components/RegistrationForm';
 import { SuccessView } from './components/SuccessView';
+import { SupabaseStatusBanner } from './components/SupabaseStatusBanner';
 import { SubmittedRegistration } from './types';
 import { Heart, Sparkles, Shield, Dumbbell } from 'lucide-react';
 
@@ -33,6 +34,7 @@ export default function App() {
         ) : (
           <div>
             <Header />
+            <SupabaseStatusBanner />
             <RegistrationForm onSuccess={handleSuccess} />
           </div>
         )}
