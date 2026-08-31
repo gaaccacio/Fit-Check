@@ -3,10 +3,15 @@
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --color-brand-orange: #FF914D;
+  --color-brand-dark: #0B0B0B;
+  --color-brand-card: #141414;
 }
 
 body {
   font-family: var(--font-sans);
+  background-color: #0B0B0B;
+  color: #F3F4F6;
 }
 
 .font-display {
@@ -19,13 +24,14 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5ede8;
+  background: #121212;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e2b4be;
+  background: #FF914D;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #cf8d9d;
+  background: #ff7724;
 }
+
 

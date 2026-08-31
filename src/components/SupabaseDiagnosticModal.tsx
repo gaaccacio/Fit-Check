@@ -68,16 +68,16 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
-      <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-stone-200 overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+      <div className="bg-[#141414] rounded-3xl max-w-lg w-full shadow-2xl border border-stone-800 overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-stone-900 text-white flex items-center justify-between">
+        <div className="px-6 py-4 bg-[#1A1A1A] border-b border-stone-800 text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+            <div className="p-2 rounded-xl bg-[#FF914D]/20 text-[#FF914D] border border-[#FF914D]/30">
               <Database className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-base">Diagnóstico & Conexão Supabase</h3>
+              <h3 className="font-bold text-base text-white font-display">Diagnóstico & Conexão Supabase</h3>
               <p className="text-xs text-stone-400">Verifique se suas inscrições estão conectadas</p>
             </div>
           </div>
@@ -90,48 +90,48 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
         </div>
 
         {/* Body */}
-        <div className="p-6 overflow-y-auto space-y-5 text-sm">
+        <div className="p-6 overflow-y-auto space-y-5 text-sm text-stone-200">
           {/* Status Alert */}
-          <div className={`p-4 rounded-xl border flex items-start gap-3 ${
+          <div className={`p-4 rounded-2xl border flex items-start gap-3 ${
             testResult.running 
-              ? 'bg-blue-50 border-blue-200 text-blue-800' 
+              ? 'bg-blue-950/40 border-blue-800/80 text-blue-200' 
               : testResult.success 
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-900' 
-                : 'bg-amber-50 border-amber-200 text-amber-900'
+                ? 'bg-emerald-950/40 border-emerald-800/80 text-emerald-200' 
+                : 'bg-amber-950/40 border-amber-800/80 text-amber-200'
           }`}>
             {testResult.running ? (
-              <RefreshCw className="w-5 h-5 animate-spin text-blue-600 shrink-0 mt-0.5" />
+              <RefreshCw className="w-5 h-5 animate-spin text-blue-400 shrink-0 mt-0.5" />
             ) : testResult.success ? (
-              <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
             ) : (
-              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             )}
             <div>
               <h4 className="font-bold text-xs uppercase tracking-wider mb-0.5">
                 {testResult.running ? 'Testando Conexão...' : testResult.success ? 'Conectado ao Supabase' : 'Atenção / Não Conectado'}
               </h4>
-              <p className="text-xs">
+              <p className="text-xs text-stone-300">
                 {testResult.message || 'Clique em testar para validar a conexão.'}
               </p>
             </div>
           </div>
 
           {/* Form Credentials */}
-          <div className="space-y-3.5 bg-stone-50 p-4 rounded-xl border border-stone-200">
-            <h4 className="font-bold text-xs uppercase text-stone-700 tracking-wider flex items-center justify-between">
+          <div className="space-y-3.5 bg-[#1A1A1A] p-4 rounded-2xl border border-stone-800">
+            <h4 className="font-bold text-xs uppercase text-stone-300 tracking-wider flex items-center justify-between">
               <span>Chaves de Acesso</span>
               <a 
                 href="https://supabase.com/dashboard" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-rose-600 lowercase font-normal hover:underline flex items-center gap-1 text-[11px]"
+                className="text-[#FF914D] lowercase font-semibold hover:underline flex items-center gap-1 text-[11px]"
               >
                 abrir painel <ExternalLink className="w-3 h-3" />
               </a>
             </h4>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 mb-1">
+              <label className="block text-xs font-semibold text-stone-300 mb-1">
                 Supabase Project URL
               </label>
               <input
@@ -139,12 +139,12 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://xyzcompany.supabase.co"
-                className="w-full px-3 py-2 text-xs font-mono bg-white border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-3 py-2 text-xs font-mono bg-[#141414] text-white border border-stone-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF914D]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 mb-1">
+              <label className="block text-xs font-semibold text-stone-300 mb-1">
                 Supabase Anon / Public Key
               </label>
               <input
@@ -152,7 +152,7 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
                 placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                className="w-full px-3 py-2 text-xs font-mono bg-white border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-3 py-2 text-xs font-mono bg-[#141414] text-white border border-stone-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF914D]"
               />
             </div>
 
@@ -160,14 +160,14 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
               <button
                 type="button"
                 onClick={handleSave}
-                className="flex-1 py-2 px-3 bg-stone-900 hover:bg-black text-white text-xs font-bold rounded-lg transition cursor-pointer"
+                className="flex-1 py-2.5 px-3 bg-[#FF914D] hover:bg-[#ff7724] text-black text-xs font-black rounded-xl transition cursor-pointer"
               >
                 Salvar & Testar Conexão
               </button>
               <button
                 type="button"
                 onClick={handleClear}
-                className="py-2 px-3 bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-semibold rounded-lg transition cursor-pointer"
+                className="py-2.5 px-3 bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold rounded-xl transition cursor-pointer"
               >
                 Limpar
               </button>
@@ -175,25 +175,25 @@ export const SupabaseDiagnosticModal: React.FC<SupabaseDiagnosticModalProps> = (
           </div>
 
           {/* Checklist */}
-          <div className="space-y-2 text-xs text-stone-600 bg-white p-3.5 rounded-xl border border-stone-200">
-            <h5 className="font-bold text-stone-800 flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-rose-500" />
+          <div className="space-y-2 text-xs text-stone-300 bg-[#1A1A1A] p-4 rounded-2xl border border-stone-800">
+            <h5 className="font-bold text-white flex items-center gap-1.5">
+              <Shield className="w-4 h-4 text-[#FF914D]" />
               Por que os dados podem não ter sido gravados?
             </h5>
-            <ul className="space-y-1.5 list-disc list-inside text-stone-600 pl-1 text-[12px]">
-              <li><strong>Variáveis no Netlify:</strong> No Netlify, adicione <code className="bg-stone-100 px-1 py-0.5 rounded font-mono">VITE_SUPABASE_URL</code> e <code className="bg-stone-100 px-1 py-0.5 rounded font-mono">VITE_SUPABASE_ANON_KEY</code> e faça um novo deploy.</li>
-              <li><strong>Tabela no Supabase:</strong> Você executou o script SQL no <em>SQL Editor</em> do Supabase para criar a tabela <code className="bg-stone-100 px-1 py-0.5 rounded font-mono">inscricoes_fitcheck</code>?</li>
-              <li><strong>Buckets de Fotos:</strong> Certifique-se de que os buckets <code className="bg-stone-100 px-1 py-0.5 rounded font-mono">fitcheck-avaliacoes</code> e <code className="bg-stone-100 px-1 py-0.5 rounded font-mono">fitcheck-comprovantes</code> foram criados.</li>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 pl-1 text-[12px]">
+              <li><strong>Variáveis no Netlify:</strong> No Netlify, adicione <code className="bg-stone-800 text-stone-200 px-1.5 py-0.5 rounded font-mono">VITE_SUPABASE_URL</code> e <code className="bg-stone-800 text-stone-200 px-1.5 py-0.5 rounded font-mono">VITE_SUPABASE_ANON_KEY</code> e faça um novo deploy.</li>
+              <li><strong>Tabela no Supabase:</strong> Você executou o script SQL no <em>SQL Editor</em> do Supabase para criar a tabela <code className="bg-stone-800 text-stone-200 px-1.5 py-0.5 rounded font-mono">inscricoes_fitcheck</code>?</li>
+              <li><strong>Buckets de Fotos:</strong> Certifique-se de que os buckets <code className="bg-stone-800 text-stone-200 px-1.5 py-0.5 rounded font-mono">fitcheck-avaliacoes</code> e <code className="bg-stone-800 text-stone-200 px-1.5 py-0.5 rounded font-mono">fitcheck-comprovantes</code> foram criados com leitura pública.</li>
             </ul>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-stone-50 border-t border-stone-200 flex justify-end gap-2">
+        <div className="p-4 bg-[#1A1A1A] border-t border-stone-800 flex justify-end gap-2">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition cursor-pointer"
+            className="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-white text-xs font-bold rounded-xl transition cursor-pointer"
           >
             Fechar Diagnóstico
           </button>

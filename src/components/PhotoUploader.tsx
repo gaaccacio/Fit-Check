@@ -87,14 +87,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
     <div className="w-full">
       {/* Header Label and Help */}
       <div className="flex items-center justify-between mb-2">
-        <label htmlFor={id} className="block text-sm font-semibold text-stone-800">
-          {label} {required && <span className="text-rose-500 font-bold">*</span>}
+        <label htmlFor={id} className="block text-sm font-semibold text-stone-200">
+          {label} {required && <span className="text-[#FF914D] font-bold">*</span>}
         </label>
         {onOpenGuideline && (
           <button
             type="button"
             onClick={onOpenGuideline}
-            className="text-xs text-rose-600 hover:text-rose-700 font-medium inline-flex items-center gap-1 hover:underline cursor-pointer"
+            className="text-xs text-[#FF914D] hover:text-[#ffaa75] font-medium inline-flex items-center gap-1 hover:underline cursor-pointer"
           >
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Guia de foto</span>
@@ -102,7 +102,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         )}
       </div>
 
-      {subtext && <p className="text-xs text-stone-500 mb-2">{subtext}</p>}
+      {subtext && <p className="text-xs text-stone-400 mb-2">{subtext}</p>}
 
       {/* Hidden File Input */}
       <input
@@ -123,25 +123,25 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
           onDrop={handleDrop}
           className={`relative border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all duration-200 group ${
             isDragging
-              ? 'border-rose-500 bg-rose-50/80 scale-[1.01]'
+              ? 'border-[#FF914D] bg-[#FF914D]/10 scale-[1.01]'
               : error
-              ? 'border-red-400 bg-red-50/30 hover:bg-red-50/50'
-              : 'border-stone-200 hover:border-rose-300 bg-white hover:bg-rose-50/20'
+              ? 'border-red-500/80 bg-red-950/20 hover:bg-red-950/30'
+              : 'border-stone-800 hover:border-[#FF914D]/60 bg-[#161616] hover:bg-[#1A1A1A]'
           }`}
         >
-          <div className="w-12 h-12 rounded-full bg-rose-100/70 text-rose-600 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-2xl bg-[#FF914D]/15 text-[#FF914D] border border-[#FF914D]/25 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform shadow-xs">
             <UploadCloud className="w-6 h-6" />
           </div>
 
-          <p className="text-sm font-semibold text-stone-700 group-hover:text-rose-600 transition-colors">
+          <p className="text-sm font-semibold text-stone-200 group-hover:text-[#FF914D] transition-colors">
             Clique para enviar ou arraste a imagem
           </p>
-          <p className="text-xs text-stone-500 mt-1">
+          <p className="text-xs text-stone-400 mt-1">
             {type === 'comprovante' ? 'JPG, PNG ou PDF (máx. 10MB)' : 'JPG, PNG ou WEBP em boa resolução'}
           </p>
 
           <div className="mt-3">
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-100">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#222222] text-[#FF914D] border border-stone-700 group-hover:border-[#FF914D]/40">
               <ImageIcon className="w-3.5 h-3.5" />
               <span>Selecionar arquivo</span>
             </span>
@@ -149,11 +149,11 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
         </div>
       ) : (
         /* Uploaded State / Preview */
-        <div className="relative border border-emerald-200 rounded-2xl p-4 bg-emerald-50/30 overflow-hidden">
+        <div className="relative border border-emerald-500/40 rounded-2xl p-4 bg-emerald-950/20 overflow-hidden">
           <div className="flex items-center gap-4">
             {/* Thumbnail or Icon */}
             {preview && !isPdf ? (
-              <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 shrink-0 group">
+              <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-stone-900 border border-stone-700 shrink-0 group">
                 <img
                   src={preview}
                   alt={label}
@@ -166,14 +166,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                     e.stopPropagation();
                     setIsZoomed(true);
                   }}
-                  className="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute inset-0 bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                   title="Ampliar imagem"
                 >
                   <Eye className="w-5 h-5" />
                 </button>
               </div>
             ) : (
-              <div className="w-16 h-20 rounded-xl bg-emerald-100 text-emerald-700 flex flex-col items-center justify-center shrink-0 border border-emerald-200">
+              <div className="w-16 h-20 rounded-xl bg-emerald-900/50 text-emerald-300 flex flex-col items-center justify-center shrink-0 border border-emerald-600/40">
                 <FileCheck className="w-8 h-8" />
                 <span className="text-[10px] font-bold mt-1 uppercase">{isPdf ? 'PDF' : 'ARQUIVO'}</span>
               </div>
@@ -181,14 +181,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
 
             {/* Info and Actions */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Arquivo anexado com sucesso</span>
               </div>
-              <p className="text-sm font-semibold text-stone-800 truncate">
+              <p className="text-sm font-semibold text-white truncate">
                 {file.name || fileName || 'Arquivo selecionado'}
               </p>
-              <p className="text-xs text-stone-500 mt-0.5">
+              <p className="text-xs text-stone-400 mt-0.5">
                 {(file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
 
@@ -197,17 +197,17 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                 <button
                   type="button"
                   onClick={() => inputRef.current?.click()}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-stone-600 hover:text-stone-900 px-2.5 py-1 rounded-lg bg-white border border-stone-200 hover:bg-stone-50 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-stone-300 hover:text-white px-2.5 py-1 rounded-lg bg-[#202020] border border-stone-700 hover:bg-[#2c2c2c] transition-colors cursor-pointer"
                 >
-                  <RefreshCw className="w-3 h-3 text-stone-500" />
+                  <RefreshCw className="w-3 h-3 text-stone-400" />
                   <span>Trocar</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleRemove}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-rose-600 hover:text-rose-700 px-2.5 py-1 rounded-lg bg-white border border-rose-200 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-red-400 hover:text-red-300 px-2.5 py-1 rounded-lg bg-[#202020] border border-red-900/50 hover:bg-red-950/40 transition-colors cursor-pointer"
                 >
-                  <Trash2 className="w-3 h-3 text-rose-500" />
+                  <Trash2 className="w-3 h-3 text-red-400" />
                   <span>Remover</span>
                 </button>
               </div>
@@ -218,7 +218,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
 
       {/* Error Message */}
       {error && (
-        <p className="text-xs font-medium text-red-600 mt-1.5 flex items-center gap-1">
+        <p className="text-xs font-medium text-red-400 mt-1.5 flex items-center gap-1">
           <span>⚠️</span> {error}
         </p>
       )}

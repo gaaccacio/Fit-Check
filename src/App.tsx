@@ -21,11 +21,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] flex flex-col justify-between text-stone-800">
+    <div className="min-h-screen bg-[#0B0B0B] flex flex-col justify-between text-stone-100 selection:bg-[#FF914D] selection:text-black">
       {/* Top micro bar */}
-      <div className="bg-stone-900 text-stone-200 py-1.5 px-4 text-center text-xs font-medium tracking-wide flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-        <span>Inscrições Abertas para a Turma de 21 Dias • Vagas Limitadas</span>
+      <div className="bg-[#141414] border-b border-stone-800 text-stone-300 py-2 px-4 text-center text-xs font-semibold tracking-wide flex items-center justify-center gap-2">
+        <Sparkles className="w-3.5 h-3.5 text-[#FF914D]" />
+        <span>Inscrições Abertas para a Turma de 21 Dias • <strong className="text-[#FF914D]">Vagas Limitadas</strong></span>
       </div>
 
       {/* Main Content */}
@@ -47,10 +47,10 @@ export default function App() {
       />
 
       {/* Footer */}
-      <footer className="bg-white border-t border-rose-100 py-6 px-4 text-center text-xs text-stone-500">
+      <footer className="bg-[#0e0e0e] border-t border-stone-800/80 py-6 px-4 text-center text-xs text-stone-500">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 font-display font-bold text-stone-800 text-sm">
-            <Dumbbell className="w-4 h-4 text-rose-500" />
+          <div className="flex items-center gap-2 font-display font-bold text-stone-200 text-sm">
+            <Dumbbell className="w-4 h-4 text-[#FF914D]" />
             <span>FitCheck © 2026 • Desafio 21 Dias</span>
           </div>
 
@@ -58,15 +58,15 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsDiagnosticOpen(true)}
-              className="text-stone-400 hover:text-stone-700 transition flex items-center gap-1 cursor-pointer"
+              className="text-stone-400 hover:text-[#FF914D] transition flex items-center gap-1 cursor-pointer font-medium"
             >
               <Database className="w-3.5 h-3.5" />
               <span>Conexão Supabase</span>
             </button>
 
-            <div className="flex items-center gap-1 text-stone-500">
-              <span>Saúde e foco</span>
-              <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <div className="flex items-center gap-1 text-stone-400">
+              <span>Constância e resultado</span>
+              <Heart className="w-3.5 h-3.5 text-[#FF914D] fill-[#FF914D]" />
             </div>
           </div>
         </div>

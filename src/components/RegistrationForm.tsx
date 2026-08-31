@@ -350,16 +350,16 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
       {/* Main Registration Card */}
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 1: Dados Pessoais */}
-        <div className="bg-white/90 backdrop-blur-xs rounded-3xl p-6 sm:p-8 border border-rose-100 shadow-xs space-y-6">
-          <div className="flex items-center gap-3 border-b border-stone-100 pb-4">
-            <div className="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center font-bold text-sm">
+        <div className="bg-[#141414] rounded-3xl p-6 sm:p-8 border border-stone-800 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-stone-800/80 pb-4">
+            <div className="w-9 h-9 rounded-xl bg-[#FF914D] text-black flex items-center justify-center font-black text-sm shadow-md shadow-[#FF914D]/20">
               1
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-stone-900 font-display">
+              <h2 className="text-lg sm:text-xl font-bold text-white font-display">
                 Dados Pessoais & Contato
               </h2>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-stone-400">
                 Informações para cadastro e acesso ao grupo exclusivo
               </p>
             </div>
@@ -368,11 +368,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Nome Completo */}
             <div className="sm:col-span-2">
-              <label htmlFor="nome" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                Nome Completo <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="nome" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                Nome Completo <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <User className="w-4 h-4" />
                 </div>
                 <input
@@ -381,23 +381,23 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   value={formData.nome}
                   onChange={handleNomeChange}
                   placeholder="Ex: Gabriela Medeiros Silva"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.nome
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
               </div>
-              {errors.nome && <p className="text-xs text-red-600 mt-1 font-medium">{errors.nome}</p>}
+              {errors.nome && <p className="text-xs text-red-400 mt-1 font-medium">{errors.nome}</p>}
             </div>
 
             {/* Idade */}
             <div>
-              <label htmlFor="idade" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                Idade <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="idade" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                Idade <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <Calendar className="w-4 h-4" />
                 </div>
                 <input
@@ -407,23 +407,23 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   onChange={handleIdadeChange}
                   placeholder="Ex: 28"
                   maxLength={2}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.idade
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
               </div>
-              {errors.idade && <p className="text-xs text-red-600 mt-1 font-medium">{errors.idade}</p>}
+              {errors.idade && <p className="text-xs text-red-400 mt-1 font-medium">{errors.idade}</p>}
             </div>
 
             {/* Celular / WhatsApp */}
             <div>
-              <label htmlFor="celular" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                Celular / WhatsApp <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="celular" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                Celular / WhatsApp <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <Phone className="w-4 h-4" />
                 </div>
                 <input
@@ -432,15 +432,15 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   value={formData.celular}
                   onChange={handleCelularChange}
                   placeholder="(00) 00000-0000"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.celular
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
               </div>
               {errors.celular ? (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.celular}</p>
+                <p className="text-xs text-red-400 mt-1 font-medium">{errors.celular}</p>
               ) : (
                 <p className="text-[11px] text-stone-400 mt-1">Para envio do link do grupo VIP</p>
               )}
@@ -448,11 +448,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
             {/* E-mail */}
             <div className="sm:col-span-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                E-mail <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="email" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                E-mail <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -461,29 +461,29 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   value={formData.email}
                   onChange={handleEmailChange}
                   placeholder="seuemail@exemplo.com"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.email
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
               </div>
-              {errors.email && <p className="text-xs text-red-600 mt-1 font-medium">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-red-400 mt-1 font-medium">{errors.email}</p>}
             </div>
           </div>
         </div>
 
         {/* Section 2: Medidas & Avaliação Física Inicial */}
-        <div className="bg-white/90 backdrop-blur-xs rounded-3xl p-6 sm:p-8 border border-rose-100 shadow-xs space-y-6">
-          <div className="flex items-center gap-3 border-b border-stone-100 pb-4">
-            <div className="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center font-bold text-sm">
+        <div className="bg-[#141414] rounded-3xl p-6 sm:p-8 border border-stone-800 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-stone-800/80 pb-4">
+            <div className="w-9 h-9 rounded-xl bg-[#FF914D] text-black flex items-center justify-center font-black text-sm shadow-md shadow-[#FF914D]/20">
               2
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-stone-900 font-display">
+              <h2 className="text-lg sm:text-xl font-bold text-white font-display">
                 Medidas & Ponto de Partida
               </h2>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-stone-400">
                 Seus dados corporais para acompanhamento dos 21 dias
               </p>
             </div>
@@ -492,11 +492,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Peso */}
             <div>
-              <label htmlFor="peso" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                Peso Atual (em kg) <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="peso" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                Peso Atual (em kg) <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <Scale className="w-4 h-4" />
                 </div>
                 <input
@@ -505,10 +505,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   value={formData.peso}
                   onChange={handlePesoChange}
                   placeholder="ex: 60,5"
-                  className={`w-full pl-10 pr-12 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-12 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.peso
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
                 <span className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-xs font-semibold text-stone-400 pointer-events-none">
@@ -516,7 +516,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 </span>
               </div>
               {errors.peso ? (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.peso}</p>
+                <p className="text-xs text-red-400 mt-1 font-medium">{errors.peso}</p>
               ) : (
                 <p className="text-[11px] text-stone-400 mt-1">Exemplo: 60,5 kg ou 65 kg</p>
               )}
@@ -524,11 +524,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
 
             {/* Altura */}
             <div>
-              <label htmlFor="altura" className="block text-sm font-semibold text-stone-800 mb-1.5">
-                Altura (em m) <span className="text-rose-500 font-bold">*</span>
+              <label htmlFor="altura" className="block text-sm font-semibold text-stone-200 mb-1.5">
+                Altura (em m) <span className="text-[#FF914D] font-bold">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                   <Ruler className="w-4 h-4" />
                 </div>
                 <input
@@ -537,10 +537,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                   value={formData.altura}
                   onChange={handleAlturaChange}
                   placeholder="ex: 1,69"
-                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl border text-sm transition-all outline-none ${
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.altura
-                      ? 'border-red-400 bg-red-50/20 focus:ring-2 focus:ring-red-200'
-                      : 'border-stone-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 bg-stone-50/30'
+                      ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
+                      : 'border-stone-800 focus:border-[#FF914D] focus:ring-2 focus:ring-[#FF914D]/20 bg-[#1A1A1A]'
                   }`}
                 />
                 <span className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-xs font-semibold text-stone-400 pointer-events-none">
@@ -548,7 +548,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 </span>
               </div>
               {errors.altura ? (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.altura}</p>
+                <p className="text-xs text-red-400 mt-1 font-medium">{errors.altura}</p>
               ) : (
                 <p className="text-[11px] text-stone-400 mt-1">Exemplo: 1,69 m ou 1.69</p>
               )}
@@ -560,29 +560,29 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
             <motion.div 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className={`p-4 rounded-2xl border ${imcInfo.cor} text-xs space-y-1`}
+              className="p-4 rounded-2xl border border-stone-700 bg-[#1A1A1A] text-xs space-y-1"
             >
               <div className="flex items-center justify-between">
-                <span className="font-semibold uppercase tracking-wider">Seu IMC Calculado:</span>
-                <span className="text-sm font-extrabold">{imcInfo.valor} ({imcInfo.classificacao})</span>
+                <span className="font-semibold uppercase tracking-wider text-stone-400">Seu IMC Calculado:</span>
+                <span className="text-sm font-extrabold text-[#FF914D]">{imcInfo.valor} ({imcInfo.classificacao})</span>
               </div>
-              <p className="text-stone-600">{imcInfo.dica}</p>
+              <p className="text-stone-300">{imcInfo.dica}</p>
             </motion.div>
           )}
 
           {/* Objetivo Principal */}
           <div className="pt-2">
-            <label className="block text-sm font-semibold text-stone-800 mb-2">
+            <label className="block text-sm font-semibold text-stone-200 mb-2">
               Qual é o seu objetivo principal no Desafio FitCheck 21 Dias?
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {OBJETIVOS.map((item) => (
                 <label
                   key={item}
-                  className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs font-medium cursor-pointer transition-all ${
+                  className={`flex items-center gap-2.5 p-3.5 rounded-xl border text-xs font-medium cursor-pointer transition-all ${
                     formData.objetivoPrincipal === item
-                      ? 'border-rose-500 bg-rose-50/70 text-rose-900 shadow-2xs font-semibold'
-                      : 'border-stone-200 bg-stone-50/40 text-stone-700 hover:bg-stone-50'
+                      ? 'border-[#FF914D] bg-[#FF914D]/15 text-white shadow-md font-bold'
+                      : 'border-stone-800 bg-[#181818] text-stone-300 hover:bg-[#1f1f1f] hover:border-stone-700'
                   }`}
                 >
                   <input
@@ -591,7 +591,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                     value={item}
                     checked={formData.objetivoPrincipal === item}
                     onChange={(e) => setFormData((prev) => ({ ...prev, objetivoPrincipal: e.target.value }))}
-                    className="accent-rose-600 w-4 h-4"
+                    className="accent-[#FF914D] w-4 h-4 cursor-pointer"
                   />
                   <span>{item}</span>
                 </label>
@@ -601,17 +601,17 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         </div>
 
         {/* Section 3: Fotos para Avaliação Física (Frontal e Lateral) */}
-        <div className="bg-white/90 backdrop-blur-xs rounded-3xl p-6 sm:p-8 border border-rose-100 shadow-xs space-y-6">
-          <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+        <div className="bg-[#141414] rounded-3xl p-6 sm:p-8 border border-stone-800 shadow-xl space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-800/80 pb-4 gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center font-bold text-sm">
+              <div className="w-9 h-9 rounded-xl bg-[#FF914D] text-black flex items-center justify-center font-black text-sm shadow-md shadow-[#FF914D]/20">
                 3
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-bold text-stone-900 font-display">
+                <h2 className="text-lg sm:text-xl font-bold text-white font-display">
                   Fotos do Corpo para Avaliação Física
                 </h2>
-                <p className="text-xs text-stone-500">
+                <p className="text-xs text-stone-400">
                   Registro visual do Dia 1 para comparação com o Dia 21 (ambas obrigatórias)
                 </p>
               </div>
@@ -620,7 +620,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
             <button
               type="button"
               onClick={() => setGuidelineModalOpen(true)}
-              className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="text-xs font-bold text-[#FF914D] hover:text-[#ffaa75] bg-[#1E1E1E] hover:bg-[#252525] border border-stone-700 hover:border-[#FF914D]/40 px-3.5 py-1.5 rounded-xl inline-flex items-center gap-1.5 transition-colors cursor-pointer self-start sm:self-auto"
             >
               <Camera className="w-3.5 h-3.5" />
               <span>Ver Dicas de Foto</span>
@@ -662,8 +662,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
           </div>
 
           {/* Privacy Note */}
-          <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 flex items-start gap-2.5 text-xs text-stone-600">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-2xl bg-[#181818] border border-stone-800 flex items-start gap-2.5 text-xs text-stone-300">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
             <p>
               <strong>Sigilo e Respeito Total:</strong> As fotos são acessadas estritamente pela equipe de avaliação física FitCheck para gerar sua comparação do dia 1 vs dia 21. Nunca são divulgadas sem sua permissão formal por escrito.
             </p>
@@ -682,7 +682,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         </div>
 
         {/* Section 5: Termo de Compromisso & Envio */}
-        <div className="bg-gradient-to-r from-rose-500/10 via-pink-500/10 to-rose-500/10 rounded-3xl p-6 sm:p-7 border border-rose-200 space-y-5">
+        <div className="bg-gradient-to-r from-[#1E1E1E] via-[#171717] to-[#1E1E1E] rounded-3xl p-6 sm:p-7 border border-stone-800 space-y-5 shadow-xl">
           <label className="flex items-start gap-3 cursor-pointer select-none">
             <input
               type="checkbox"
@@ -692,38 +692,38 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 setFormData((prev) => ({ ...prev, termoAceito: e.target.checked }));
                 if (errors.termoAceito) setErrors((prev) => ({ ...prev, termoAceito: undefined }));
               }}
-              className="accent-rose-600 w-5 h-5 rounded mt-0.5 cursor-pointer"
+              className="accent-[#FF914D] w-5 h-5 rounded mt-0.5 cursor-pointer"
             />
-            <span className="text-xs sm:text-sm text-stone-800 leading-relaxed font-medium">
-              Eu confirmo que todas as informações acima são verdadeiras, estou apta a realizar atividades físicas e me comprometo com os <strong>21 dias de superação do Desafio FitCheck</strong>! <span className="text-rose-600 font-bold">*</span>
+            <span className="text-xs sm:text-sm text-stone-200 leading-relaxed font-medium">
+              Eu confirmo que todas as informações acima são verdadeiras, estou apta a realizar atividades físicas e me comprometo com os <strong className="text-white">21 dias de superação do Desafio FitCheck</strong>! <span className="text-[#FF914D] font-bold">*</span>
             </span>
           </label>
           {errors.termoAceito && (
-            <p className="text-xs text-red-600 font-medium pl-8">{errors.termoAceito}</p>
+            <p className="text-xs text-red-400 font-medium pl-8">{errors.termoAceito}</p>
           )}
 
           {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 hover:from-rose-700 hover:via-pink-700 hover:to-rose-700 active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg shadow-rose-500/25 transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+            className="w-full py-4 px-6 rounded-2xl bg-[#FF914D] hover:bg-[#ff7724] active:scale-[0.99] text-black font-black text-base sm:text-lg shadow-xl shadow-[#FF914D]/25 transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
                 <span>Processando Inscrição...</span>
               </>
             ) : (
               <>
-                <Flame className="w-5 h-5 text-amber-300 animate-pulse" />
+                <Flame className="w-5 h-5 text-black" />
                 <span>FINALIZAR INSCRIÇÃO • DESAFIO FITCHECK</span>
                 <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
 
-          <p className="text-center text-[11px] text-stone-500">
-            Todos os campos marcados com <span className="text-rose-600 font-bold">*</span> são de preenchimento obrigatório.
+          <p className="text-center text-[11px] text-stone-400">
+            Todos os campos marcados com <span className="text-[#FF914D] font-bold">*</span> são de preenchimento obrigatório.
           </p>
         </div>
       </form>

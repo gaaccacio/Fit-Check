@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Quote, Sparkles, Dumbbell } from 'lucide-react';
+import { Sparkles, Dumbbell, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const quotes = [
   {
-    quote: "A constância supera a intensidade. 21 dias para você se colocar como prioridade.",
+    quote: "A constância supera a intensidade. 21 dias para você se colocar como prioridade absoluta.",
     author: "Comunidade FitCheck",
   },
   {
@@ -17,7 +17,7 @@ const quotes = [
   },
   {
     quote: "Cada gota de suor é uma vitória contra o cansaço. Você é mais forte do que imagina.",
-    author: "Treino & Autocuidado",
+    author: "Treino & Disciplina",
   },
 ];
 
@@ -32,10 +32,10 @@ export const DailyMotivationBanner: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-rose-50 via-pink-50/60 to-rose-50 border border-rose-100 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-2xs">
-      <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
-          <Dumbbell className="w-5 h-5" />
+    <div className="bg-gradient-to-r from-[#181818] via-[#151515] to-[#181818] border border-stone-800 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-md">
+      <div className="flex items-start gap-3.5">
+        <div className="w-10 h-10 rounded-xl bg-[#FF914D]/15 text-[#FF914D] border border-[#FF914D]/25 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+          <Flame className="w-5 h-5" />
         </div>
         <div className="flex-1 min-h-[48px] flex flex-col justify-center">
           <AnimatePresence mode="wait">
@@ -46,10 +46,10 @@ export const DailyMotivationBanner: React.FC = () => {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="text-xs sm:text-sm italic font-medium text-stone-700 leading-relaxed">
+              <p className="text-xs sm:text-sm italic font-medium text-stone-200 leading-relaxed">
                 "{quotes[index].quote}"
               </p>
-              <span className="text-[11px] font-semibold text-rose-600 uppercase tracking-wider block mt-1">
+              <span className="text-[11px] font-bold text-[#FF914D] uppercase tracking-wider block mt-1">
                 ✦ {quotes[index].author}
               </span>
             </motion.div>
@@ -59,3 +59,4 @@ export const DailyMotivationBanner: React.FC = () => {
     </div>
   );
 };
+
