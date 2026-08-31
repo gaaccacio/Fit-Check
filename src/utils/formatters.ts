@@ -7,21 +7,55 @@ export function formatPhone(value: string): string {
 }
 
 export function formatWeight(value: string): string {
-  // Allow user to type numbers and comma/dot
-  const clean = value.replace(/[^0-9.,]/g, '');
-  if (!clean) return '';
-  
-  // Normalize comma/dot
-  const normalized = clean.replace(',', '.');
-  const num = parseFloat(normalized);
-  if (isNaN(num)) return clean;
-  return clean;
+  // Extract only digits, max 5 characters (e.g. 10020 -> 100,20)
+  const digits = value.replace(/\D/g, '').slice(0, 5);
+  if (!digits) return '';
+
+  if (digits.length <= 2) {
+    // e.g. "6", "65"
+    return digits;
+  }
+
+  if (digits.length === 3) {
+    const num = parseInt(digits, 10);
+    // If between 300 and 999 (e.g. 605 -> 60,5, 755 -> 75,5)
+    if (num >= 300) {
+      return `${digits.slice(0, 2)},${digits.slice(2)}`;
+    }
+    // If 100 to 299 (e.g. 100, 115, 120 kg whole number)
+    return digits;
+  }
+
+  if (digits.length === 4) {
+    const firstTwo = parseInt(digits.slice(0, 2), 10);
+    // If starting with 30-99 (e.g. 6050 -> 60,50, 7525 -> 75,25)
+    if (firstTwo >= 30) {
+      return `${digits.slice(0, 2)},${digits.slice(2, 4)}`;
+    }
+    // If starting with 10-29 (e.g. 1005 -> 100,5, 1205 -> 120,5)
+    return `${digits.slice(0, 3)},${digits.slice(3, 4)}`;
+  }
+
+  // 5 digits: e.g. "10020" -> "100,20", "12550" -> "125,50"
+  return `${digits.slice(0, 3)},${digits.slice(3, 5)}`;
 }
 
 export function formatHeight(value: string): string {
-  // Allow user to type numbers, comma, dot
-  const clean = value.replace(/[^0-9.,]/g, '');
-  return clean;
+  // Extract only digits, max 3 characters (e.g. 169 -> 1,69)
+  const digits = value.replace(/\D/g, '').slice(0, 3);
+  if (!digits) return '';
+
+  if (digits.length === 1) {
+    return digits;
+  }
+
+  if (digits.length === 2) {
+    // e.g. "16" -> "1,6"
+    return `${digits[0]},${digits[1]}`;
+  }
+
+  // 3 digits: e.g. "169" -> "1,69"
+  return `${digits[0]},${digits.slice(1, 3)}`;
 }
 
 export function parseWeightValue(value: string): number | null {

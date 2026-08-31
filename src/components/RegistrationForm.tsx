@@ -501,10 +501,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 </div>
                 <input
                   type="text"
+                  inputMode="numeric"
                   id="peso"
                   value={formData.peso}
                   onChange={handlePesoChange}
-                  placeholder="ex: 60,5"
+                  placeholder="ex: 100,20 ou 65"
                   className={`w-full pl-10 pr-12 py-2.5 rounded-xl border text-sm transition-all outline-none text-white ${
                     errors.peso
                       ? 'border-red-500/80 bg-red-950/20 focus:ring-2 focus:ring-red-500/30'
@@ -518,7 +519,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               {errors.peso ? (
                 <p className="text-xs text-red-400 mt-1 font-medium">{errors.peso}</p>
               ) : (
-                <p className="text-[11px] text-stone-400 mt-1">Exemplo: 60,5 kg ou 65 kg</p>
+                <p className="text-[11px] text-stone-400 mt-1">Formatação automática (ex: digite 10020 para 100,20 kg)</p>
               )}
             </div>
 
@@ -533,6 +534,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 </div>
                 <input
                   type="text"
+                  inputMode="numeric"
                   id="altura"
                   value={formData.altura}
                   onChange={handleAlturaChange}
@@ -550,7 +552,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
               {errors.altura ? (
                 <p className="text-xs text-red-400 mt-1 font-medium">{errors.altura}</p>
               ) : (
-                <p className="text-[11px] text-stone-400 mt-1">Exemplo: 1,69 m ou 1.69</p>
+                <p className="text-[11px] text-stone-400 mt-1">Formatação automática (ex: digite 169 para 1,69 m)</p>
               )}
             </div>
           </div>

@@ -46,7 +46,7 @@ export const PhotoGuidelineModal: React.FC<PhotoGuidelineModalProps> = ({
                 <div>
                   <h4 className="text-sm font-bold text-white">Roupas Adequadas</h4>
                   <p className="text-xs text-stone-400 mt-1 leading-relaxed">
-                    Use roupas de treino justas como top fitness e shorts/legging para permitir a visualização precisa das linhas corporais e postura.
+                    Use roupa de treino como top e short ou biquíni para permitir a visualização precisa das linhas corporais e postura.
                   </p>
                 </div>
               </div>

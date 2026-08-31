@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { 
   CheckCircle2, 
   Flame, 
-  MessageCircle, 
   Download, 
   Sparkles, 
   User, 
@@ -125,26 +124,16 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ data, onReset }) => {
           </div>
         </div>
 
-        {/* Action Buttons: WhatsApp and Instagram */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          <a
-            href={`https://api.whatsapp.com/send?text=Oi!%20Acabei%20de%20me%20cadastrar%20no%20Desafio%20FitCheck%2021%20Dias!%20Meu%20nome%20%C3%A9%20${encodeURIComponent(data.nome)}%20e%20meu%20protocolo%20%C3%A9%20${data.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all shadow-md shadow-emerald-950"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Falar no WhatsApp</span>
-          </a>
-
+        {/* Action Button: Instagram */}
+        <div className="pt-2">
           <a
             href="https://www.instagram.com/desafiofitcheck/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#bc1888] hover:opacity-95 text-white font-bold text-sm transition-all shadow-md"
+            className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#bc1888] hover:opacity-95 text-white font-bold text-sm sm:text-base transition-all shadow-lg"
           >
             <Instagram className="w-5 h-5" />
-            <span>Seguir @desafiofitcheck</span>
+            <span>Acompanhar no Instagram @desafiofitcheck</span>
             <ArrowUpRight className="w-4 h-4 opacity-80" />
           </a>
         </div>
